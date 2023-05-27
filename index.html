@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokesaurus: The Hilarious Dictionary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+        * {
+            margin: 0px;
+        }
+
+        body {
+            font-family: 'Source Serif Pro', serif;
+        }
+        main {
+            display:  grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-template-rows: 1fr;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            grid-column-start: 2;
+            justify-self: center;
+            text-align: center;
+            background-color: aliceblue;
+            border-radius: 25px;
+            padding: 20px;
+            width: 100%;
+            margin: 50px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            background-color: #0000FF11;
+            padding: 5px 20px;
+            border-radius: 25px;
+            font-family: monospace;
+        }
+
+        form {
+            padding: 10px 5px;
+        }
+
+        input {
+            border-radius: 5px;
+            border: 1px solid #00000044;
+            padding: 10px;
+        }
+
+        input[type="search"] {
+            width: 60%;
+        }
+
+        input[type="submit"] {
+            width: 70px;
+            background-color: cornflowerblue;
+            color: aliceblue;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(185, 223, 255);
+            color: black;
+        }
+
+        input[type="search"]:focus {
+            box-shadow: 0px 0px 4px 0px #007fFF;
+            outline: none;
+        }
+
+        hr {
+            width: 80%;    
+            display: inline-block;        
+            margin: 15px 0px;
+        }
+
+        div {
+            text-align: start;
+            width: 90%;
+            margin: 0px 10%;
+        }
+
+        small {
+            font-size: small;
+        }
+
+        .result > * {
+            margin-top: 7px;
+        }
+
+        #source {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <main>
+        <section class="container">
+            <form onsubmit="return false;">
+                <input type="search" autocomplete="off" autofocus placeholder="Search Word" id="word">
+                <input type="submit" value="Search">
+            </form>
+            <hr>
+            <section class="result">
+                <div id="word-div"></div>
+                <div id="phonetic"></div>
+                <div id="audio"></div>
+                <div id="meanings"></div>
+                <div id="source"></div>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
