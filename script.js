@@ -5,9 +5,16 @@ let phoneticsDiv = document.querySelector('#phonetic');
 let meaningsDiv = document.querySelector('#meanings');
 let audioDiv = document.querySelector('#audio');
 let sourceDiv = document.querySelector('#source');
-searchBtn.addEventListener('click', search);
+let joke = document.querySelector('#joke');
+let jokeDiv = document.querySelector('.joke-sec');
 
-function search()
+searchBtn.addEventListener('click', () => {
+    search();
+    getJoke();
+});
+
+
+async function search()
 {
     let word = input.value;
     const xhr = new XMLHttpRequest();
@@ -22,13 +29,13 @@ function search()
         wordDiv.appendChild(msg);
         return;
     }
-    xhr.open('GET', `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+    xhr.open('GET', `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, true);
 
     xhr.onload = function ()
     {
         if (xhr.status == 200)
         {
-            console.log(JSON.parse(this.responseText));
+            // console.log(JSON.parse(this.responseText));
             let data = JSON.parse(this.responseText)[0];
             let WORD = data['word'];
             let PHONETIC = data['phonetic'];
@@ -130,6 +137,63 @@ function search()
             msg.style.fontSize = 'small';
             msg.innerHTML = 'OOPS! Some error occurred!';
             wordDiv.appendChild(msg);
+        }
+    }
+
+    xhr.send();
+}
+
+async function getJoke()
+{
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`, true);
+    console.log(`https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`);
+    xhr.onload = function()
+    {
+        if (xhr.status == 200)
+        {
+            let jokeInfo = JSON.parse(xhr.responseText);
+            if (!Boolean(jokeInfo['error']))
+            {
+                if (jokeInfo['type'] == 'single')
+                {
+                    joke.innerHTML = jokeInfo['joke'];
+                }
+                else if (jokeInfo['type'] == 'twopart')
+                {
+                    let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                    let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                    joke.innerHTML = `${setup}<br>${delivery}<br>`;
+                }
+            }
+            else
+            {
+                console.log("HITTTT");
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`, true);
+                xhr.onload = function ()
+                {
+                    if (xhr.status == 200)
+                    {
+                        let jokeInfo = JSON.parse(xhr.responseText);
+                        if (jokeInfo['type'] == 'single')
+                        {
+                            joke.innerHTML = jokeInfo['joke'];
+                        }
+                        else if (jokeInfo['type'] == 'twopart')
+                        {
+                            let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                            let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                            joke.innerHTML = `${setup}<br>${delivery}<br>`;
+                        }
+                    }
+                    else
+                    {
+                        console.log('Error', jokeInfo);
+                    }
+                }
+                xhr.send();
+            }
         }
     }
 
