@@ -19,7 +19,7 @@
             grid-template-columns: 1fr 3fr 1fr;
             grid-template-rows: 1fr;
             align-items: center;
-            min-height: 100vh;
+            min-height: 90vh;
         }
 
         .container {
@@ -93,13 +93,29 @@
 
         #source {
             margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .joke-sec {
+            border: 1px solid black;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            margin: auto;
+            background-color: bisque;
+            border: none;
         }
     </style>
 </head>
 <body>
-    
+    <section class="joke-sec">
+        <strong>
+            <em id="joke"></em>
+        </strong>
+    </section>
     <main>
         <section class="container">
+            <h1>Jokesaurus: The Hilarious Dictionary</h1>
             <form onsubmit="return false;">
                 <input type="search" autocomplete="off" autofocus placeholder="Search Word" id="word">
                 <input type="submit" value="Search">
