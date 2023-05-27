@@ -151,3 +151,9 @@ function resetFields()
     input.value = '';
     sourceDiv.innerHTML = '';
 }
+
+        const btn = document.querySelector(".btn-toggle");
+
+btn.addEventListener("click", function () {
+  document.body.classList.toggle("dark-theme");
+});
