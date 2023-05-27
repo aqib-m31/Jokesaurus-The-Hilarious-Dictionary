@@ -146,20 +146,54 @@ async function search()
 async function getJoke()
 {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit', true);
-
+    xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`, true);
+    console.log(`https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`);
     xhr.onload = function()
     {
-        let jokeInfo = JSON.parse(xhr.responseText);
-        if (jokeInfo['type'] == 'single')
+        if (xhr.status == 200)
         {
-            joke.innerHTML = jokeInfo['joke'];
-        }
-        else if (jokeInfo['type'] == 'twopart')
-        {
-            let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
-            let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
-            joke.innerHTML = `${setup}<br>${delivery}<br>`;
+            let jokeInfo = JSON.parse(xhr.responseText);
+            if (!Boolean(jokeInfo['error']))
+            {
+                if (jokeInfo['type'] == 'single')
+                {
+                    joke.innerHTML = jokeInfo['joke'];
+                }
+                else if (jokeInfo['type'] == 'twopart')
+                {
+                    let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                    let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                    joke.innerHTML = `${setup}<br>${delivery}<br>`;
+                }
+            }
+            else
+            {
+                console.log("HITTTT");
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`, true);
+                xhr.onload = function ()
+                {
+                    if (xhr.status == 200)
+                    {
+                        let jokeInfo = JSON.parse(xhr.responseText);
+                        if (jokeInfo['type'] == 'single')
+                        {
+                            joke.innerHTML = jokeInfo['joke'];
+                        }
+                        else if (jokeInfo['type'] == 'twopart')
+                        {
+                            let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                            let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                            joke.innerHTML = `${setup}<br>${delivery}<br>`;
+                        }
+                    }
+                    else
+                    {
+                        console.log('Error', jokeInfo);
+                    }
+                }
+                xhr.send();
+            }
         }
     }
 
