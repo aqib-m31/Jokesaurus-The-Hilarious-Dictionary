@@ -13,14 +13,11 @@ searchBtn.addEventListener('click', () => {
     getJoke();
 });
 
-
-async function search()
-{
+async function search() {
     let word = input.value;
     const xhr = new XMLHttpRequest();
-    
-    if (word.length == 0)
-    {
+
+    if (word.length == 0) {
         resetFields();
         let msg = document.createElement('p');
         msg.style.color = 'red';
@@ -31,36 +28,28 @@ async function search()
     }
     xhr.open('GET', `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, true);
 
-    xhr.onload = function ()
-    {
-        if (xhr.status == 200)
-        {
-            // console.log(JSON.parse(this.responseText));
+    xhr.onload = function () {
+        if (xhr.status == 200) {
             let data = JSON.parse(this.responseText)[0];
             let WORD = data['word'];
             let PHONETIC = data['phonetic'];
             let PHONETICS = data['phonetics'];
             resetFields();
-            wordDiv.innerHTML = `Word: ${WORD}`;
+            wordDiv.innerHTML = `<b>Word:</b> ${WORD}`;
             input.value = word;
-            if (PHONETIC != undefined)
-            {
-                phoneticsDiv.innerHTML = `Phonetic: ${PHONETIC}`;
+            if (PHONETIC != undefined) {
+                phoneticsDiv.innerHTML = `<b>Phonetic:</b> ${PHONETIC}`;
             }
 
-            if (PHONETICS)
-            {
-                audioDiv.innerHTML = 'Audio: ';
-                for (let ph of PHONETICS)
-                {
-                    if (ph.hasOwnProperty('audio'))
-                    {
+            if (PHONETICS) {
+                audioDiv.innerHTML = '<b>Audio:</b> ';
+                for (let ph of PHONETICS) {
+                    if (ph.hasOwnProperty('audio')) {
                         let symbol = ph['audio'].slice(-6, -4);
                         let audioUrl = ph['audio'];
-                        if (symbol)
-                        {
-                
-                
+                        if (symbol) {
+
+
                             let btn = document.createElement('button');
                             btn.style.background = '#025464';
                             btn.style.margin = '0px 5px';
@@ -77,41 +66,37 @@ async function search()
                         }
                     }
                 }
-                if (audioDiv.innerHTML.length < 10)
-                {
+                if (audioDiv.innerHTML.length < 10) {
                     audioDiv.innerHTML = '';
                 }
-    
-            } 
+
+            }
 
 
-            meaningsDiv.innerHTML = 'Meaning:<br>';
-            for (let meaning of data['meanings'])
-            {
+            meaningsDiv.innerHTML = '<b>Meaning:</b><br>';
+            for (let meaning of data['meanings']) {
                 let detail = document.createElement('details');
                 let summary = document.createElement('summary');
-                summary.style.color = '#025464';
-                summary.innerHTML = `${meaning['partOfSpeech']}`;
+                summary.setAttribute('class', 'summary-light');
+                summary.innerHTML = `<b>${meaning['partOfSpeech']}<b>`;
 
                 let partOfSpeech = document.createElement('ul');
-    
-                for (let definition of meaning['definitions'])
-                {
-        
+
+                for (let definition of meaning['definitions']) {
+
                     let li = document.createElement('li');
                     li.innerHTML = definition['definition'];
                     partOfSpeech.appendChild(li);
                 }
-    
+
                 detail.appendChild(summary);
                 detail.appendChild(partOfSpeech);
                 meaningsDiv.appendChild(detail);
-    
+
             }
 
             let sourceUrl = data['sourceUrls'];
-            if (sourceUrl) 
-            {
+            if (sourceUrl) {
                 let wikipediaLink = document.createElement('a');
                 wikipediaLink.setAttribute('href', sourceUrl);
                 wikipediaLink.setAttribute('target', '_blank');
@@ -120,8 +105,7 @@ async function search()
                 sourceDiv.appendChild(wikipediaLink);
             }
         }
-        else if (xhr.status == 404)
-        {
+        else if (xhr.status == 404) {
             resetFields();
             let msg = document.createElement('p');
             msg.style.color = 'red';
@@ -129,8 +113,7 @@ async function search()
             msg.innerHTML = 'WORD NOT FOUND!';
             wordDiv.appendChild(msg);
         }
-        else
-        {
+        else {
             resetFields();
             let msg = document.createElement('p');
             msg.style.color = 'red';
@@ -143,52 +126,38 @@ async function search()
     xhr.send();
 }
 
-async function getJoke()
-{
+async function getJoke() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`, true);
-    console.log(`https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`);
-    xhr.onload = function()
-    {
-        if (xhr.status == 200)
-        {
+    xhr.onload = function () {
+        if (xhr.status == 200) {
             let jokeInfo = JSON.parse(xhr.responseText);
-            if (!Boolean(jokeInfo['error']))
-            {
-                if (jokeInfo['type'] == 'single')
-                {
+            if (!Boolean(jokeInfo['error'])) {
+                if (jokeInfo['type'] == 'single') {
                     joke.innerHTML = jokeInfo['joke'];
                 }
-                else if (jokeInfo['type'] == 'twopart')
-                {
+                else if (jokeInfo['type'] == 'twopart') {
                     let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
                     let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
                     joke.innerHTML = `${setup}<br>${delivery}<br>`;
                 }
             }
-            else
-            {
-                console.log("HITTTT");
+            else {
                 let xhr = new XMLHttpRequest();
                 xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`, true);
-                xhr.onload = function ()
-                {
-                    if (xhr.status == 200)
-                    {
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
                         let jokeInfo = JSON.parse(xhr.responseText);
-                        if (jokeInfo['type'] == 'single')
-                        {
+                        if (jokeInfo['type'] == 'single') {
                             joke.innerHTML = jokeInfo['joke'];
                         }
-                        else if (jokeInfo['type'] == 'twopart')
-                        {
+                        else if (jokeInfo['type'] == 'twopart') {
                             let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
                             let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
                             joke.innerHTML = `${setup}<br>${delivery}<br>`;
                         }
                     }
-                    else
-                    {
+                    else {
                         console.log('Error', jokeInfo);
                     }
                 }
@@ -200,14 +169,12 @@ async function getJoke()
     xhr.send();
 }
 
-function play(url)
-{
+function play(url) {
     let audio = new Audio(url);
     audio.play();
 }
 
-function resetFields()
-{
+function resetFields() {
     wordDiv.innerHTML = '';
     phoneticsDiv.innerHTML = '';
     meaningsDiv.innerHTML = '';
@@ -215,3 +182,15 @@ function resetFields()
     input.value = '';
     sourceDiv.innerHTML = '';
 }
+
+const btn = document.querySelector(".btn-toggle");
+
+btn.addEventListener("click", function () {
+    document.body.classList.toggle("dark-theme");
+    if (document.getElementById('tagline').style.color != 'white') {
+        document.getElementById('tagline').style.color = 'white';
+    }
+    else {
+        document.getElementById('tagline').style.color = 'black';
+    }
+});
