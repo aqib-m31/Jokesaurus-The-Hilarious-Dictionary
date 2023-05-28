@@ -59,3 +59,6 @@ During the development of **JokeSaurus**, we gained valuable experiences that en
 ## Team Collab: Embracing the Beauty of Teamwork
 
 As beginners in the world of hacking, our **JokeSaurus** journey was filled with laughter, learning, and the power of collaboration. We discovered the beauty of working together, building connections, and leveraging each other's strengths. The experience taught us valuable lessons in teamwork, communication, and the joy of creating something fun and meaningful as a united team.
+
+## What's next for Jokesaurus: The Hilarious Dictionary
+We're taking laughter to the next level! Our plans include adding captivating animations to bring the jokes to life and incorporating examples from the dictionary API to provide context and deepen the learning experience. Get ready to laugh and learn in a whole new way! Stay tuned for more exciting updates!
