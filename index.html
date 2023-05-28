@@ -1,118 +1,136 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-	<title>Jokesaurus</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="JokeSaurus - The Hilarious Dictionary. Laugh, learn, and expand your vocabulary with JokeSaurus, the ultimate fusion of a comprehensive dictionary and a joke generator. Get ready to explore the meanings, phonetics, and parts of speech of any word while enjoying a hearty dose of laughter.">
-	<meta name="keywords" content="JokeSaurus, dictionary, jokes, laughter, vocabulary, humor, funny, learning">
-	<meta property="og:title" content="JokeSaurus - The Hilarious Dictionary">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-	<link type="image/png" sizes="32x32" rel="icon" href="./favicon.ico">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style>
-		body,
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			font-family: "Montserrat", sans-serif;
-		}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokesaurus: The Hilarious Dictionary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+        * {
+            margin: 0px;
+        }
 
-		.w3-row-padding img {
-			margin-bottom: 12px
-		}
+        body {
+            font-family: 'Source Serif Pro', serif;
+        }
+        main {
+            display:  grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-template-rows: 1fr;
+            align-items: center;
+            min-height: 90vh;
+        }
 
-		.bgimg {
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: cover;
-			background-image: url('lol.jpg');
-			min-height: 100%;
-		}
+        .container {
+            grid-column-start: 2;
+            justify-self: center;
+            text-align: center;
+            background-color: aliceblue;
+            border-radius: 25px;
+            padding: 20px;
+            width: 100%;
+            margin: 50px;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            background-color: #0000FF11;
+            padding: 5px 20px;
+            border-radius: 25px;
+            font-family: monospace;
+        }
 
-		body.dark-theme {
-			color: #DDE6ED !important;
-			background-color: #27374D;
-		}
-	</style>
+        form {
+            padding: 10px 5px;
+        }
+
+        input {
+            border-radius: 5px;
+            border: 1px solid #00000044;
+            padding: 10px;
+        }
+
+        input[type="search"] {
+            width: 60%;
+        }
+
+        input[type="submit"] {
+            width: 70px;
+            background-color: cornflowerblue;
+            color: aliceblue;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(185, 223, 255);
+            color: black;
+        }
+
+        input[type="search"]:focus {
+            box-shadow: 0px 0px 4px 0px #007fFF;
+            outline: none;
+        }
+
+        hr {
+            width: 80%;    
+            display: inline-block;        
+            margin: 15px 0px;
+        }
+
+        div {
+            text-align: start;
+            width: 90%;
+            margin: 0px 10%;
+        }
+
+        small {
+            font-size: small;
+        }
+
+        .result > * {
+            margin-top: 7px;
+        }
+
+        #source {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .joke-sec {
+            border: 1px solid black;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            margin: auto;
+            background-color: bisque;
+            border: none;
+        }
+    </style>
 </head>
-
 <body>
+    <section class="joke-sec">
+        <strong>
+            <em id="joke"></em>
+        </strong>
+    </section>
+    <main>
+        <section class="container">
+            <h1>Jokesaurus: The Hilarious Dictionary</h1>
+            <form onsubmit="return false;">
+                <input type="search" autocomplete="off" autofocus placeholder="Search Word" id="word">
+                <input type="submit" value="Search">
+            </form>
+            <hr>
+            <section class="result">
+                <div id="word-div"></div>
+                <div id="phonetic"></div>
+                <div id="audio"></div>
+                <div id="meanings"></div>
+                <div id="source"></div>
+            </section>
+        </section>
+    </main>
 
-	<!-- Sidebar with image -->
-	<nav class="w3-sidebar w3-hide-medium w3-hide-small" style="width:40%">
-		<div class="bgimg"></div>
-	</nav>
-
-	<!-- Page Content -->
-	<div class="w3-main w3-padding-large" style="margin-left:40%">
-
-		<!-- Header -->
-		<i class="w3-right btn-toggle fa fa-adjust" style="font-size:32px"></i>
-		<main style="min-height: 85vh;">
-			<!-- INTRO TAG -->
-			<header class="w3-container w3-center" style="padding:40px 18px" id="home">
-				<h1 class="w3-jumbo" style="font-size: 2.5rem !important;"><b>Jokesaurus: The Hilarious
-						Dictionary<br>🦖📚</b>
-				</h1>
-				<p style="font-size: 1.2rem;">Khabi Laughed Here 😂</p>
-				<!-- BTS OF THE HACK -->
-				<img src="lol.jpg" class="w3-image w3-hide-large w3-hide-small w3-round"
-					style="display:block;width:60%;margin:auto;">
-				<img src="lol.jpg" class="w3-image w3-hide-large w3-hide-medium w3-round" width="1000" height="1333">
-			</header>
-
-			<div class="w3-padding-10-20-10 w3-content w3-text-grey" style="margin-bottom:15px">
-
-				<p id="tagline">Let's learn with some fun:</p>
-				<form onsubmit="return false;">
-					<p><input class="w3-input w3-padding-large w3-border w3-round-xlarge" type="search"
-							autocomplete="off" autofocus placeholder="Search Word" id="word"></p>
-					<button class="w3-button w3-light-grey w3-padding-large w3-round-xlarge" type="submit" type="submit"
-						value="Search">
-						<i class="fa fa-search" style='font-size:24px'></i> SEARCH
-					</button>
-				</form>
-			</div>
-
-			<div class="joke-sec">
-				<strong>
-					<em id="joke"></em>
-				</strong>
-			</div>
-
-			<hr>
-			<section class="result">
-				<div id="word-div"></div>
-				<br>
-				<div id="phonetic"></div>
-				<br>
-				<div id="audio"></div>
-				<br>
-				<div id="meanings"></div>
-				<br>
-				<div id="source"></div>
-			</section>
-		</main>
-		<BR><BR>
-
-		<!-- Footer -->
-		<footer class="w3-container w3-padding-24 w3-light-grey w3-center w3-opacity-0.2 w3-xlarge"
-			style="margin:-24px">
-			<p class="w3-LARGE"><b>📚🦖MADE WITH 😂</b></p>
-			<!-- End footer -->
-		</footer>
-
-		<!-- END PAGE CONTENT -->
-	</div>
-
-	<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
-
 </html>
