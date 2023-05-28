@@ -66,7 +66,7 @@ async function search() {
                         }
                     }
                 }
-                if (audioDiv.innerHTML.length < 10) {
+                if (audioDiv.innerHTML.length < 20) {
                     audioDiv.innerHTML = '';
                 }
 
