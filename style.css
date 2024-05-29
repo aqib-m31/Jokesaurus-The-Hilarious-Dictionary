@@ -1,0 +1,26 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat", sans-serif;
+}
+
+.w3-row-padding img {
+    margin-bottom: 12px
+}
+
+.bgimg {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('lol.jpg');
+    min-height: 100%;
+}
+
+body.dark-theme {
+    color: #DDE6ED !important;
+    background-color: #27374D;
+}
