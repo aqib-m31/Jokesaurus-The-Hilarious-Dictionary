@@ -43,8 +43,14 @@ async function search() {
             resetFields();
             wordDiv.innerHTML = `<b>Word:</b> ${WORD}`;
             input.value = word;
+
             if (PHONETIC != undefined) {
                 phoneticsDiv.innerHTML = `<b>Phonetic:</b> ${PHONETIC}`;
+            } else if (PHONETICS) {
+                const phoneticTxt = PHONETICS.find(ph => ph.hasOwnProperty('text') && ph.text !== null && ph.text !== "");
+                if (phoneticTxt) {
+                    phoneticsDiv.innerHTML = `<b>Phonetic:</b> ${phoneticTxt.text}`;
+                }
             }
 
             if (PHONETICS) {
@@ -54,22 +60,22 @@ async function search() {
                         const symbol = ph['audio'].slice(-6, -4);
                         const audioUrl = ph['audio'];
                         if (symbol) {
-
-
                             const btn = document.createElement('button');
                             btn.style.background = '#025464';
                             btn.style.margin = '0px 5px';
                             btn.style.color = 'white';
                             btn.style.border = 'none';
                             btn.style.borderRadius = '7px';
-                            btn.style.padding = '5px 10px';
-                            btn.innerHTML = `|> ${symbol}`;
+                            btn.style.padding = '1px 4px';
+                            btn.style.fontFamily = "'Fira Code', monospace";
+                            btn.innerHTML = `|>${symbol}`;
                             btn.addEventListener('click', () => {
                                 const audio = new Audio(audioUrl);
                                 audio.play();
                             });
                             audioDiv.appendChild(btn);
                         }
+                        break;
                     }
                 }
                 if (audioDiv.innerHTML.length < 20) {
