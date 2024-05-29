@@ -26,8 +26,7 @@ async function search() {
     if (word.length == 0) {
         resetFields();
         const msg = document.createElement('p');
-        msg.style.color = 'red';
-        msg.style.fontSize = 'small';
+        msg.classList.add('error-msg');
         msg.innerHTML = 'Please Enter a Word!';
         wordDiv.appendChild(msg);
         return;
@@ -61,13 +60,7 @@ async function search() {
                         const audioUrl = ph['audio'];
                         if (symbol) {
                             const btn = document.createElement('button');
-                            btn.style.background = '#025464';
-                            btn.style.margin = '0px 5px';
-                            btn.style.color = 'white';
-                            btn.style.border = 'none';
-                            btn.style.borderRadius = '7px';
-                            btn.style.padding = '1px 4px';
-                            btn.style.fontFamily = "'Fira Code', monospace";
+                            btn.classList.add('audio-btn');
                             btn.innerHTML = `|>${symbol}`;
                             btn.addEventListener('click', () => {
                                 const audio = new Audio(audioUrl);
@@ -112,7 +105,7 @@ async function search() {
                 const wikipediaLink = document.createElement('a');
                 wikipediaLink.setAttribute('href', sourceUrl);
                 wikipediaLink.setAttribute('target', '_blank');
-                wikipediaLink.setAttribute('style', 'background: #025464; color: white; padding: 5px 10px; text-decoration: none;');
+                wikipediaLink.classList.add('wiki-link');
                 wikipediaLink.innerHTML = 'Wikipedia';
                 sourceDiv.appendChild(wikipediaLink);
             }
@@ -120,16 +113,14 @@ async function search() {
         else if (xhr.status == 404) {
             resetFields();
             const msg = document.createElement('p');
-            msg.style.color = 'red';
-            msg.style.fontSize = 'small';
+            msg.classList.add('error-msg');
             msg.innerHTML = 'WORD NOT FOUND!';
             wordDiv.appendChild(msg);
         }
         else {
             resetFields();
             const msg = document.createElement('p');
-            msg.style.color = 'red';
-            msg.style.fontSize = 'small';
+            msg.classList.add('error-msg');
             msg.innerHTML = 'OOPS! Some error occurred!';
             wordDiv.appendChild(msg);
         }

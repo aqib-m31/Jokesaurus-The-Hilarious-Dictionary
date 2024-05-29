@@ -24,3 +24,25 @@ body.dark-theme {
     color: #DDE6ED !important;
     background-color: #27374D;
 }
+
+.error-msg {
+    color: red;
+    font-size: small;
+}
+
+.audio-btn {
+    background: #025464;
+    margin: 0px 5px;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 1px 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+.wiki-link {
+    background: #025464;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+}
