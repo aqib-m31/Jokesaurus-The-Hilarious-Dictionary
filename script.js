@@ -1,27 +1,32 @@
-let input = document.forms[0][0];
-let searchBtn = document.forms[0][1];
-let wordDiv = document.querySelector('#word-div');
-let phoneticsDiv = document.querySelector('#phonetic');
-let meaningsDiv = document.querySelector('#meanings');
-let audioDiv = document.querySelector('#audio');
-let sourceDiv = document.querySelector('#source');
-let joke = document.querySelector('#joke');
-let jokeDiv = document.querySelector('.joke-sec');
+// Variables to reference HTML elements
+const input = document.forms[0][0];
+const searchBtn = document.forms[0][1];
+const wordDiv = document.querySelector('#word-div');
+const phoneticsDiv = document.querySelector('#phonetic');
+const meaningsDiv = document.querySelector('#meanings');
+const audioDiv = document.querySelector('#audio');
+const sourceDiv = document.querySelector('#source');
+const joke = document.querySelector('#joke');
+const jokeDiv = document.querySelector('.joke-sec');
+const btn = document.querySelector(".btn-toggle");
 
 searchBtn.addEventListener('click', () => {
+    // Initiate the search for the word's meaning and fetch a related joke.
     search();
     getJoke();
 });
 
+
+// Fetch word details from dictionary API and display them.
+// If word is not found, display an error message.
 async function search() {
-    let word = input.value;
+    const word = input.value;
     const xhr = new XMLHttpRequest();
 
     if (word.length == 0) {
         resetFields();
-        let msg = document.createElement('p');
-        msg.style.color = 'red';
-        msg.style.fontSize = 'small';
+        const msg = document.createElement('p');
+        msg.classList.add('error-msg');
         msg.innerHTML = 'Please Enter a Word!';
         wordDiv.appendChild(msg);
         return;
@@ -30,40 +35,40 @@ async function search() {
 
     xhr.onload = function () {
         if (xhr.status == 200) {
-            let data = JSON.parse(this.responseText)[0];
-            let WORD = data['word'];
-            let PHONETIC = data['phonetic'];
-            let PHONETICS = data['phonetics'];
+            const data = JSON.parse(this.responseText)[0];
+            const WORD = data['word'];
+            const PHONETIC = data['phonetic'];
+            const PHONETICS = data['phonetics'];
             resetFields();
             wordDiv.innerHTML = `<b>Word:</b> ${WORD}`;
             input.value = word;
+
             if (PHONETIC != undefined) {
                 phoneticsDiv.innerHTML = `<b>Phonetic:</b> ${PHONETIC}`;
+            } else if (PHONETICS) {
+                const phoneticTxt = PHONETICS.find(ph => ph.hasOwnProperty('text') && ph.text !== null && ph.text !== "");
+                if (phoneticTxt) {
+                    phoneticsDiv.innerHTML = `<b>Phonetic:</b> ${phoneticTxt.text}`;
+                }
             }
 
             if (PHONETICS) {
                 audioDiv.innerHTML = '<b>Audio:</b> ';
-                for (let ph of PHONETICS) {
+                for (const ph of PHONETICS) {
                     if (ph.hasOwnProperty('audio')) {
-                        let symbol = ph['audio'].slice(-6, -4);
-                        let audioUrl = ph['audio'];
+                        const symbol = ph['audio'].slice(-6, -4);
+                        const audioUrl = ph['audio'];
                         if (symbol) {
-
-
-                            let btn = document.createElement('button');
-                            btn.style.background = '#025464';
-                            btn.style.margin = '0px 5px';
-                            btn.style.color = 'white';
-                            btn.style.border = 'none';
-                            btn.style.borderRadius = '7px';
-                            btn.style.padding = '5px 10px';
-                            btn.innerHTML = `|> ${symbol}`;
+                            const btn = document.createElement('button');
+                            btn.classList.add('audio-btn');
+                            btn.innerHTML = `|>${symbol}`;
                             btn.addEventListener('click', () => {
-                                let audio = new Audio(audioUrl);
+                                const audio = new Audio(audioUrl);
                                 audio.play();
                             });
                             audioDiv.appendChild(btn);
                         }
+                        break;
                     }
                 }
                 if (audioDiv.innerHTML.length < 20) {
@@ -74,17 +79,17 @@ async function search() {
 
 
             meaningsDiv.innerHTML = '<b>Meaning:</b><br>';
-            for (let meaning of data['meanings']) {
-                let detail = document.createElement('details');
-                let summary = document.createElement('summary');
+            for (const meaning of data['meanings']) {
+                const detail = document.createElement('details');
+                const summary = document.createElement('summary');
                 summary.setAttribute('class', 'summary-light');
                 summary.innerHTML = `<b>${meaning['partOfSpeech']}<b>`;
 
-                let partOfSpeech = document.createElement('ul');
+                const partOfSpeech = document.createElement('ul');
 
-                for (let definition of meaning['definitions']) {
+                for (const definition of meaning['definitions']) {
 
-                    let li = document.createElement('li');
+                    const li = document.createElement('li');
                     li.innerHTML = definition['definition'];
                     partOfSpeech.appendChild(li);
                 }
@@ -95,29 +100,27 @@ async function search() {
 
             }
 
-            let sourceUrl = data['sourceUrls'];
+            const sourceUrl = data['sourceUrls'];
             if (sourceUrl) {
-                let wikipediaLink = document.createElement('a');
+                const wikipediaLink = document.createElement('a');
                 wikipediaLink.setAttribute('href', sourceUrl);
                 wikipediaLink.setAttribute('target', '_blank');
-                wikipediaLink.setAttribute('style', 'background: #025464; color: white; padding: 5px 10px; text-decoration: none;');
+                wikipediaLink.classList.add('wiki-link');
                 wikipediaLink.innerHTML = 'Wikipedia';
                 sourceDiv.appendChild(wikipediaLink);
             }
         }
         else if (xhr.status == 404) {
             resetFields();
-            let msg = document.createElement('p');
-            msg.style.color = 'red';
-            msg.style.fontSize = 'small';
+            const msg = document.createElement('p');
+            msg.classList.add('error-msg');
             msg.innerHTML = 'WORD NOT FOUND!';
             wordDiv.appendChild(msg);
         }
         else {
             resetFields();
-            let msg = document.createElement('p');
-            msg.style.color = 'red';
-            msg.style.fontSize = 'small';
+            const msg = document.createElement('p');
+            msg.classList.add('error-msg');
             msg.innerHTML = 'OOPS! Some error occurred!';
             wordDiv.appendChild(msg);
         }
@@ -126,34 +129,35 @@ async function search() {
     xhr.send();
 }
 
+// Fetch a joke from the API.
 async function getJoke() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&contains=${input.value}`, true);
     xhr.onload = function () {
         if (xhr.status == 200) {
-            let jokeInfo = JSON.parse(xhr.responseText);
+            const jokeInfo = JSON.parse(xhr.responseText);
             if (!Boolean(jokeInfo['error'])) {
                 if (jokeInfo['type'] == 'single') {
                     joke.innerHTML = jokeInfo['joke'];
                 }
                 else if (jokeInfo['type'] == 'twopart') {
-                    let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
-                    let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                    const setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                    const delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
                     joke.innerHTML = `${setup}<br>${delivery}<br>`;
                 }
             }
             else {
-                let xhr = new XMLHttpRequest();
+                const xhr = new XMLHttpRequest();
                 xhr.open('GET', `https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`, true);
                 xhr.onload = function () {
                     if (xhr.status == 200) {
-                        let jokeInfo = JSON.parse(xhr.responseText);
+                        const jokeInfo = JSON.parse(xhr.responseText);
                         if (jokeInfo['type'] == 'single') {
                             joke.innerHTML = jokeInfo['joke'];
                         }
                         else if (jokeInfo['type'] == 'twopart') {
-                            let setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
-                            let delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
+                            const setup = jokeInfo['setup'].replaceAll('\n', '<br>').trim();
+                            const delivery = jokeInfo['delivery'].replaceAll('\n', '<br>').trim();
                             joke.innerHTML = `${setup}<br>${delivery}<br>`;
                         }
                     }
@@ -169,11 +173,13 @@ async function getJoke() {
     xhr.send();
 }
 
+// Play audio from provided URL.
 function play(url) {
-    let audio = new Audio(url);
+    const audio = new Audio(url);
     audio.play();
 }
 
+// Clear all fields and input value.
 function resetFields() {
     wordDiv.innerHTML = '';
     phoneticsDiv.innerHTML = '';
@@ -183,14 +189,26 @@ function resetFields() {
     sourceDiv.innerHTML = '';
 }
 
-const btn = document.querySelector(".btn-toggle");
-
+// Toggle theme on button click and store preference.
 btn.addEventListener("click", function () {
-    document.body.classList.toggle("dark-theme");
+    const isDarkTheme = document.body.classList.toggle("dark-theme");
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
     if (document.getElementById('tagline').style.color != 'white') {
         document.getElementById('tagline').style.color = 'white';
     }
     else {
+        document.getElementById('tagline').style.color = 'black';
+    }
+});
+
+// Set theme on page load based on saved preference.
+document.addEventListener('DOMContentLoaded', (event) => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        document.body.classList.add("dark-theme");
+        document.getElementById('tagline').style.color = 'white';
+    } else {
+        document.body.classList.remove("dark-theme");
         document.getElementById('tagline').style.color = 'black';
     }
 });
