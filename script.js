@@ -186,11 +186,23 @@ function resetFields() {
 const btn = document.querySelector(".btn-toggle");
 
 btn.addEventListener("click", function () {
-    document.body.classList.toggle("dark-theme");
+    const isDarkTheme = document.body.classList.toggle("dark-theme");
+    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
     if (document.getElementById('tagline').style.color != 'white') {
         document.getElementById('tagline').style.color = 'white';
     }
     else {
+        document.getElementById('tagline').style.color = 'black';
+    }
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        document.body.classList.add("dark-theme");
+        document.getElementById('tagline').style.color = 'white';
+    } else {
+        document.body.classList.remove("dark-theme");
         document.getElementById('tagline').style.color = 'black';
     }
 });
